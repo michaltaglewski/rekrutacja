@@ -23,6 +23,7 @@ class AuthController extends AbstractController
     public function login(Request $request): Response
     {
         try {
+            // @TODO request validation
             $username = $request->get('username');
             $token = $request->get('token');
 
