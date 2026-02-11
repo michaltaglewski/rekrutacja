@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use Doctrine\DBAL\Connection;
+use App\User\Application\Exception\UnauthorizedException;
+use App\User\Application\Exception\UserNotFoundException;
+use App\User\Application\Service\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,32 +14,32 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AuthController extends AbstractController
 {
+    public function __construct(
+        private readonly UserService $userService
+    ) {
+    }
+
     #[Route('/auth/{username}/{token}', name: 'auth_login')]
-    public function login(string $username, string $token, Connection $connection, Request $request): Response
+    public function login(Request $request): Response
     {
-        $sql = "SELECT * FROM auth_tokens WHERE token = '$token'";
-        $result = $connection->executeQuery($sql);
-        $tokenData = $result->fetchAssociative();
+        try {
+            $username = $request->get('username');
+            $token = $request->get('token');
 
-        if (!$tokenData) {
-            return new Response('Invalid token', 401);
+            $user = $this->userService->getAuthUser($username, $token);
+
+            $session = $request->getSession();
+            $session->set('user_id', $user->getId());
+            $session->set('username', $user->getUsername());
+
+            $this->addFlash('success', 'Welcome back, ' . $username . '!');
+
+            return $this->redirectToRoute('home');
+        } catch (UnauthorizedException $exception) {
+            return new Response($exception->getMessage(), 401);
+        } catch (UserNotFoundException $exception) {
+            return new Response($exception->getMessage(), 404);
         }
-
-        $userSql = "SELECT * FROM users WHERE username = '$username'";
-        $userResult = $connection->executeQuery($userSql);
-        $userData = $userResult->fetchAssociative();
-
-        if (!$userData) {
-            return new Response('User not found', 404);
-        }
-
-        $session = $request->getSession();
-        $session->set('user_id', $userData['id']);
-        $session->set('username', $username);
-
-        $this->addFlash('success', 'Welcome back, ' . $username . '!');
-
-        return $this->redirectToRoute('home');
     }
 
     #[Route('/logout', name: 'logout')]
