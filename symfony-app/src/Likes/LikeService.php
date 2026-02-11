@@ -11,7 +11,8 @@ class LikeService
 {
     public function __construct(
         private LikeRepositoryInterface $likeRepository
-    ) {}
+    ) {
+    }
 
     public function execute(Photo $photo): void
     {
