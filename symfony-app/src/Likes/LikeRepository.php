@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Likes;
 
 use App\Entity\Photo;
-use App\Entity\User;
+use App\User\Infrastructure\Doctrine\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

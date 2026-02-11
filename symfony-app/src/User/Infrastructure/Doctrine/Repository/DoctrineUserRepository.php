@@ -6,7 +6,7 @@ namespace App\User\Infrastructure\Doctrine\Repository;
 
 use App\User\Domain\Entity\User;
 use App\User\Domain\Repository\UserRepository;
-use App\Entity\User as UserEntity;
+use App\User\Infrastructure\Doctrine\Entity\User as UserEntity;
 use App\User\Infrastructure\Doctrine\Mapper\UserMapper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;

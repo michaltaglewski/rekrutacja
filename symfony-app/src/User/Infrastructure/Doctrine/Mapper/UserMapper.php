@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\User\Infrastructure\Doctrine\Mapper;
 
-use App\Entity\User as UserEntity;
 use App\User\Domain\Entity\User;
+use App\User\Infrastructure\Doctrine\Entity\User as UserEntity;
 
 class UserMapper
 {

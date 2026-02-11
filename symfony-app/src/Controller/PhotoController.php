@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Photo;
-use App\Entity\User;
 use App\Likes\LikeRepository;
 use App\Likes\LikeService;
+use App\User\Infrastructure\Doctrine\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
