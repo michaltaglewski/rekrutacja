@@ -8,5 +8,7 @@ use App\User\Domain\Entity\User;
 
 interface UserRepository
 {
+    public function findByUserId(int $userId): ?User;
+
     public function findByUsername(string $username): ?User;
 }

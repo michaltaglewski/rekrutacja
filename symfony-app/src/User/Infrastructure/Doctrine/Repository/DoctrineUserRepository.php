@@ -7,6 +7,7 @@ namespace App\User\Infrastructure\Doctrine\Repository;
 use App\User\Domain\Entity\User;
 use App\User\Domain\Repository\UserRepository;
 use App\Entity\User as UserEntity;
+use App\User\Infrastructure\Doctrine\Mapper\UserMapper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,6 +18,15 @@ class DoctrineUserRepository extends ServiceEntityRepository implements UserRepo
         parent::__construct($registry, UserEntity::class);
     }
 
+    public function findByUserId(int $userId): ?User
+    {
+        $entityManager = $this->getEntityManager();
+
+        $user = $entityManager->getRepository(UserEntity::class)->find($userId);
+
+        return $user ? UserMapper::toDomain($user) : null;
+    }
+
     public function findByUsername(string $username): ?User
     {
         $entityManager = $this->getEntityManager();
@@ -25,15 +35,21 @@ class DoctrineUserRepository extends ServiceEntityRepository implements UserRepo
 
         $userSql = "SELECT * FROM users WHERE username = '$username'";
         $userResult = $connection->executeQuery($userSql);
-        $userData = $userResult->fetchAssociative();
+        $user = $userResult->fetchAssociative();
 
-        if (!$userData) {
+        if (!$user) {
             return null;
         }
 
+        // @TODO better mapping with associative
         return new User(
-            $userData['id'],
-            $userData['username']
+            $user['id'],
+            $user['username'],
+            $user['email'],
+            $user['name'],
+            $user['last_name'],
+            $user['age'],
+            $user['bio']
         );
     }
 }
