@@ -10,10 +10,10 @@ final class User
         private readonly int $id,
         private readonly string $username,
         private readonly string $email,
-        private readonly ?string $name,
-        private readonly ?string $lastName,
-        private readonly ?int $age,
-        private readonly ?string $bio,
+        private readonly ?string $name = null,
+        private readonly ?string $lastName = null,
+        private readonly ?int $age = null,
+        private readonly ?string $bio = null,
     ) {
     }
 

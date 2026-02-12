@@ -95,7 +95,11 @@ class UserServiceTest extends TestCase
         $token = 'test_token';
 
         $authToken = new AuthToken(1, $token);
-        $user = new User(2, $token);
+        $user = new User(
+            2,
+            $token,
+            'test@example.com',
+        );
 
         // When
         $this->authTokenRepository
@@ -119,7 +123,11 @@ class UserServiceTest extends TestCase
         $token = 'test_token';
 
         $authToken = new AuthToken(1, $token);
-        $user = new User(1, $token);
+        $user = new User(
+            1,
+            $token,
+            'test@example.com',
+        );
 
         // When
         $this->authTokenRepository
