@@ -33,7 +33,7 @@ class UserServiceTest extends TestCase
         );
     }
 
-    public function testGetAuthUserWhenAuthTokenNotExists(): void
+    public function testGetAuthUserFailureWhenAuthTokenNotExists(): void
     {
         // Expect
         $this->expectException(UnauthorizedException::class);
@@ -57,7 +57,7 @@ class UserServiceTest extends TestCase
         $this->userServiceUnderTest->getAuthUser($username, $token);
     }
 
-    public function testGetAuthUserWhenUserNotExists(): void
+    public function testGetAuthUserFailureWhenUserNotExists(): void
     {
         // Expect
         $this->expectException(UserNotFoundException::class);
@@ -84,7 +84,7 @@ class UserServiceTest extends TestCase
         $this->userServiceUnderTest->getAuthUser($username, $token);
     }
 
-    public function testGetAuthUserWhenAuthTokenDoesNotBelongForTheUser(): void
+    public function testGetAuthUserFailureWhenAuthTokenDoesNotBelongForTheUser(): void
     {
         // Expect
         $this->expectException(UserNotFoundException::class);
