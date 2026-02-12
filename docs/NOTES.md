@@ -13,6 +13,13 @@ tworów domenowych takich jak repozytorium czy serwis.
 6. Wraz ze zmianami j/w dopisałem kilka podstawowych testów unitowych serwisów do tego aby potwierdzić sobie,
    że po dalszych modfikacjach, nie naruszę logiki aplikacji.
 7. Dodałem brakującą warstwę infrastruktury dla AuthToken i User, tworząc odpowiednie repozytoria.
+8. Po przeanalizowaniu controllera PhotoController oraz domeny Like, stwierdziłem, 
+że nie podoba mi logika w której to Like jest tą dominującą encją nad Photo - przykładowo 
+lajkowanie zdjęcia poprzez repozytorium lajków. Już nawet samo słowo "Like" wskazuje, że jest czynność 
+a więc pasuje idealnie jako metoda encji Photo. Jest to odwrócenie root aggregate. 
+W związku z tym pozbyłem się części metod z LikeRepository i przeniosłem do encji Photo. Repozytorium Photo nie wymaga już dalej
+osobnych metod do lajkowania i unlajkowania.
+
 
 ## Naprawione błędy i różne poprawki
 - w composer.json autoload psr-4 wyglądał jakby miał błąd w zapisie namespace "App\\\\", zmieniłem na "App\\"

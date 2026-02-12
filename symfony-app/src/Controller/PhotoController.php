@@ -4,12 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Photo;
-use App\Likes\LikeRepository;
-use App\Likes\LikeService;
-use App\User\Infrastructure\Doctrine\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ManagerRegistry;
+use App\Photo\Domain\Repository\PhotoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,11 +12,16 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class PhotoController extends AbstractController
 {
+    public function __construct(
+        private readonly PhotoRepository $photoRepository
+    ) {
+    }
+
     #[Route('/photo/{id}/like', name: 'photo_like')]
-    public function like($id, Request $request, EntityManagerInterface $em, ManagerRegistry $managerRegistry): Response
+    public function like(Request $request): Response
     {
-        $likeRepository = new LikeRepository($managerRegistry);
-        $likeService = new LikeService($likeRepository);
+        // @TODO request validation
+        $id = (int) $request->get('id');
 
         $session = $request->getSession();
         $userId = $session->get('user_id');
@@ -31,22 +31,21 @@ class PhotoController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        $user = $em->getRepository(User::class)->find($userId);
-        $photo = $em->getRepository(Photo::class)->find($id);
-
-        $likeRepository->setUser($user);
-
+        $photo = $this->photoRepository->findByIdWithLikes($id);
         if (!$photo) {
             throw $this->createNotFoundException('Photo not found');
         }
 
-        if ($likeRepository->hasUserLikedPhoto($photo)) {
-            $likeRepository->unlikePhoto($photo);
+        if ($photo->isLikedBy($userId)) {
+            $photo->unlike($userId);
             $this->addFlash('info', 'Photo unliked!');
         } else {
-            $likeService->execute($photo);
+            $photo->like($userId);
             $this->addFlash('success', 'Photo liked!');
         }
+
+        $this->photoRepository->save($photo);
+        $this->photoRepository->setLikeCounter($photo);
 
         return $this->redirectToRoute('home');
     }
