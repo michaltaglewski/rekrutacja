@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Photo\Infrastructure\Doctrine\Repository\DoctrineLikeRepository;
-use App\Photo\Infrastructure\Doctrine\Repository\DoctrinePhotoRepository;
-use App\User\Infrastructure\Doctrine\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ManagerRegistry;
+use App\Photo\Domain\Repository\LikeRepository;
+use App\Photo\Domain\Repository\PhotoRepository;
+use App\User\Domain\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,16 +15,20 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
+    public function __construct(
+        private readonly PhotoRepository $photoRepository,
+        private readonly LikeRepository $likeRepository,
+        private readonly UserRepository $userRepository,
+    ) {
+    }
+
     /**
      * @Route("/", name="home")
      * @return JsonResponse
      */
-    public function index(Request $request, EntityManagerInterface $em, ManagerRegistry $managerRegistry): Response
+    public function index(Request $request): Response
     {
-        $photoRepository = new DoctrinePhotoRepository($managerRegistry);
-        $likeRepository = new DoctrineLikeRepository($managerRegistry);
-
-        $photos = $photoRepository->findAllWithUsers();
+        $photos = $this->photoRepository->findAllWithUsers();
 
         $session = $request->getSession();
         $userId = $session->get('user_id');
@@ -34,12 +36,12 @@ class HomeController extends AbstractController
         $userLikes = [];
 
         if ($userId) {
-            $currentUser = $em->getRepository(User::class)->find($userId);
+            $currentUser = $this->userRepository->findByUserId($userId);
 
             if ($currentUser) {
                 foreach ($photos as $photo) {
-                    $likeRepository->setUser($currentUser);
-                    $userLikes[$photo->getId()] = $likeRepository->hasUserLikedPhoto($photo);
+                    $this->likeRepository->setUserId($currentUser->getId());
+                    $userLikes[$photo->getId()] = $this->likeRepository->hasUserLikedPhoto($photo);
                 }
             }
         }
