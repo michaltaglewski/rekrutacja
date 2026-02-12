@@ -1,6 +1,12 @@
-# Define your routes here
 controllers:
     resource:
         path: ../src/Controller/
         namespace: App\Controller
+    type: attribute
+
+# User Context
+user_controllers:
+    resource:
+        path: ../src/User/Ui/Http/Controller/
+        namespace: App\User\Ui\Http\Controller
     type: attribute
