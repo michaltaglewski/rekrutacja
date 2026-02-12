@@ -10,3 +10,10 @@ user_controllers:
         path: ../src/User/Ui/Http/Controller/
         namespace: App\User\Ui\Http\Controller
     type: attribute
+
+# Photo Context
+photo_controllers:
+    resource:
+        path: ../src/Photo/Ui/Http/Controller/
+        namespace: App\Photo\Ui\Http\Controller
+    type: attribute
