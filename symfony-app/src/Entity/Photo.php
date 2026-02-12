@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Repository\PhotoRepository;
+use App\Likes\Like as LikeEntity;
+use App\Repository\DoctrinePhotoRepository;
 use App\User\Infrastructure\Doctrine\Entity\User;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: PhotoRepository::class)]
+#[ORM\Entity(repositoryClass: DoctrinePhotoRepository::class)]
 #[ORM\Table(name: 'photos')]
 class Photo
 {
@@ -38,6 +41,15 @@ class Photo
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'photos')]
     #[ORM\JoinColumn(nullable: false)]
     private User $user;
+
+
+    #[ORM\OneToMany(mappedBy: 'photo', targetEntity: LikeEntity::class, cascade: ['persist', 'remove'])]
+    public Collection $likes;
+
+    public function __construct()
+    {
+        $this->likes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {

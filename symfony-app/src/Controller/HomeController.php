@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Likes\LikeRepository;
-use App\Repository\PhotoRepository;
+use App\Repository\DoctrinePhotoRepository;
 use App\User\Infrastructure\Doctrine\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -23,7 +23,7 @@ class HomeController extends AbstractController
      */
     public function index(Request $request, EntityManagerInterface $em, ManagerRegistry $managerRegistry): Response
     {
-        $photoRepository = new PhotoRepository($managerRegistry);
+        $photoRepository = new DoctrinePhotoRepository($managerRegistry);
         $likeRepository = new LikeRepository($managerRegistry);
 
         $photos = $photoRepository->findAllWithUsers();
