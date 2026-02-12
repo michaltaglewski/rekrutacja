@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Repository;
+namespace App\Photo\Infrastructure\Doctrine\Repository;
 
-use App\Entity\Photo as PhotoEntity;
 use App\Photo\Domain\Entity\Photo;
 use App\Photo\Domain\Repository\PhotoRepository;
+use App\Photo\Infrastructure\Doctrine\Entity\Photo as PhotoEntity;
 use App\Photo\Infrastructure\Doctrine\Mapper\PhotoMapper;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;

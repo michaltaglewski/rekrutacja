@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Photo\Infrastructure\Doctrine\Mapper;
 
-use App\Entity\Photo as PhotoEntity;
-use App\Likes\Like as LikeEntity;
 use App\Photo\Domain\Entity\Like;
 use App\Photo\Domain\Entity\Photo;
+use App\Photo\Infrastructure\Doctrine\Entity\Like as LikeEntity;
+use App\Photo\Infrastructure\Doctrine\Entity\Photo as PhotoEntity;
 use App\User\Infrastructure\Doctrine\Entity\User as UserEntity;
 use Doctrine\ORM\EntityManagerInterface;
 

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Entity;
+namespace App\Photo\Infrastructure\Doctrine\Entity;
 
-use App\Likes\Like as LikeEntity;
-use App\Repository\DoctrinePhotoRepository;
+use App\Photo\Infrastructure\Doctrine\Entity\Like as LikeEntity;
+use App\Photo\Infrastructure\Doctrine\Repository\DoctrinePhotoRepository;
 use App\User\Infrastructure\Doctrine\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

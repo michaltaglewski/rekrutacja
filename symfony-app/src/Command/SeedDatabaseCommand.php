@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Entity\Photo;
+use App\Photo\Infrastructure\Doctrine\Entity\Photo;
 use App\User\Infrastructure\Doctrine\Entity\AuthToken;
 use App\User\Infrastructure\Doctrine\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
