@@ -6,6 +6,7 @@
 2. Zanim jednak zacząłem modyfikacje, postanowiłem doinstalować narzędzie do analizy statycznej kodu code sniffer
    (nie było to bardzo konieczne, ale lubię trzymać porządek od początku).
 4. Logikę pobierania użytkownika po tokenie i username w AuthController przeniosłem do App\User\Application\Service\UserService.
+5. Generalnie w controllerach, widzę potrzebę wydzielenia logiki biznesowej do innych miejsc np. Services lub Commands. 
 Widzę też możliwość zmniejszenia zależności metod (requestów) np. od EntityManagera, 
 pozostawiając minimum parametrów (idealnie tylko obiekt Request). Cała zależność DI controllera może ograniczać się do 
 tworów domenowych takich jak repozytorium czy serwis.
