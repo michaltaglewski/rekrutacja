@@ -57,13 +57,6 @@ class PhotoMapper
                 $likeEntity->setPhoto($photoEntity);
                 $likeEntity->setUserId($like->getUserId());
 
-                $userEntity = $entityManager->getReference(
-                    UserEntity::class,
-                    $like->getUserId()
-                );
-
-                $likeEntity->setUser($userEntity);
-
                 $photoEntity->likes->add($likeEntity);
             }
         }
