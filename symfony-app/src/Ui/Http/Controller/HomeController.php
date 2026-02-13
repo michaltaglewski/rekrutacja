@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Ui\Http\Controller;
 
 use App\Photo\Domain\Repository\LikeRepository;
 use App\Photo\Domain\Repository\PhotoRepository;
 use App\User\Domain\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,10 +21,7 @@ class HomeController extends AbstractController
     ) {
     }
 
-    /**
-     * @Route("/", name="home")
-     * @return JsonResponse
-     */
+    #[Route('/', name: 'home')]
     public function index(Request $request): Response
     {
         $photos = $this->photoRepository->findAllWithUsers();

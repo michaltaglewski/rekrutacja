@@ -19,7 +19,8 @@ lajkowanie zdjęcia poprzez repozytorium lajków. Już nawet samo słowo "Like" 
 a więc pasuje idealnie jako metoda encji Photo. Jest to odwrócenie root aggregate. 
 W związku z tym pozbyłem się części metod z LikeRepository i przeniosłem do encji Photo. Repozytorium Photo nie wymaga już dalej
 osobnych metod do lajkowania i unlajkowania.
-9. Uprościłem HomeController i pozbyłem się zależności od repozytoriów doctrine, zastępując interfejsami.
+9. Uprościłem HomeController i pozbyłem się zależności od repozytoriów doctrine, zastępując interfejsami. 
+Dostosowałem strukutrę katalogu i przeniosłem do /src/Ui/Http/Controller/HomeController.php
 10. Encje doctrinowe miały bezpośrednie relacje z innymi encjami (np Like z User), co samo w sobie zupełnie nie jest błędem, 
 ale postanowiłem zastąpić je identyfikatorami. Ma to znaczenie w miejsach, gdzie encje różnych domen "komunikują" się ze sobą, 
 z racji że w DDD nie wolno mieszać obiektów pomiędzy bounded contextami, takie podejście ułatwi dalszy rozwoj aplikacji.
@@ -28,6 +29,7 @@ z racji że w DDD nie wolno mieszać obiektów pomiędzy bounded contextami, tak
 - w composer.json autoload psr-4 wyglądał jakby miał błąd w zapisie namespace "App\\\\", zmieniłem na "App\\"
 - AuthController miał błąd polegający na tym, że token autoryzacyjny i użytkownik był sprawdzany niezależnie, 
 pomijając sprawdzanie czy istniejący token należy do danego użytkownika
+- w HomeController phpdoc błędnie wskazywał na typ zwracany JsonResponse. Poprawiłem + zmieniłem nową wersję atrybutów PHP
 - generalnie wolę unikać nazw zmiennych typu `$em` (entity manager), oczywiście skróty same w sobie nie są złe oraz 
 gdy taka jest akurat przyjęta konwencja czy zasada w zespole i wszyscy rozumieją "co to jest". 
 Dla mnie `$entityManager` czyta się o wiele lepiej (KISS).

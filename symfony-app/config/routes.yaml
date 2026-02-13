@@ -1,7 +1,7 @@
 controllers:
     resource:
-        path: ../src/Controller/
-        namespace: App\Controller
+        path: ../src/Ui/Http/Controller/
+        namespace: App\Ui\Http\Controller
     type: attribute
 
 # User Context
