@@ -18,12 +18,38 @@ class DoctrinePhotoRepository extends ServiceEntityRepository implements PhotoRe
         parent::__construct($registry, PhotoEntity::class);
     }
 
-    public function findAllWithUsers(): array
+    public function findAllWithUsers(?array $filters = []): array
     {
-        return $this->createQueryBuilder('p')
+        $queryBuilder = $this->createQueryBuilder('p')
             ->leftJoin('p.user', 'u')
-            ->addSelect('u')
-            ->orderBy('p.id', 'ASC')
+            ->addSelect('u');
+
+        if (!empty($filters['location'])) {
+            $queryBuilder->andWhere('p.location LIKE :location')
+                ->setParameter('location', '%' . $filters['location'] . '%');
+        }
+
+        if (!empty($filters['camera'])) {
+            $queryBuilder->andWhere('p.camera LIKE :camera')
+                ->setParameter('camera', '%' . $filters['camera'] . '%');
+        }
+
+        if (!empty($filters['description'])) {
+            $queryBuilder->andWhere('p.description LIKE :description')
+                ->setParameter('description', '%' . $filters['description'] . '%');
+        }
+
+        if (!empty($filters['taken_at'])) {
+            $queryBuilder->andWhere('DATE(p.takenAt) = :taken_at')
+                ->setParameter('taken_at', $filters['taken_at']);
+        }
+
+        if (!empty($filters['username'])) {
+            $queryBuilder->andWhere('u.username LIKE :username')
+                ->setParameter('username', '%' . $filters['username'] . '%');
+        }
+
+        return $queryBuilder->orderBy('p.id', 'ASC')
             ->getQuery()
             ->getResult();
     }

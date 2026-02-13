@@ -24,7 +24,17 @@ class HomeController extends AbstractController
     #[Route('/', name: 'home')]
     public function index(Request $request): Response
     {
-        $photos = $this->photoRepository->findAllWithUsers();
+        $filters = [
+            'location' => $request->query->get('location', ''),
+            'camera' => $request->query->get('camera', ''),
+            'description' => $request->query->get('description', ''),
+            'taken_at' => $request->query->get('taken_at', ''),
+            'username' => $request->query->get('username', ''),
+        ];
+
+        $filters = array_filter($filters, fn ($value) => $value !== '');
+
+        $photos = $this->photoRepository->findAllWithUsers($filters);
 
         $session = $request->getSession();
         $userId = $session->get('user_id');
