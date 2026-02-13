@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace App\User\Ui\Http\Controller;
 
+use App\Photo\Application\Api\Phoenix\PhoenixClient;
+use App\Photo\Application\Exception\PhoenixApiClientHttpException;
+use App\Photo\Application\Exception\PhoenixApiUnauthorizedHttpException;
+use App\Photo\Domain\Entity\Photo;
+use App\Photo\Domain\Repository\PhotoRepository;
 use App\User\Domain\Entity\PhoenixAccessToken;
 use App\User\Domain\Repository\PhoenixAccessTokenRepository;
 use App\User\Domain\Repository\UserRepository;
@@ -16,7 +21,9 @@ class ProfileController extends AbstractController
 {
     public function __construct(
         private readonly UserRepository $userRepository,
+        private readonly PhotoRepository $photoRepository,
         private readonly PhoenixAccessTokenRepository $phoenixAccessTokenRepository,
+        private readonly PhoenixClient $phoenixClient,
     ) {
     }
 
@@ -92,5 +99,44 @@ class ProfileController extends AbstractController
         $this->addFlash('success', 'Phoenix access token updated successfully.');
 
         return $this->redirectToRoute('profile_phoenix');
+    }
+
+    #[Route('/profile/import-photos', name: 'profile_import_photos')]
+    public function importPhotos(Request $request): Response
+    {
+        $session = $request->getSession();
+        $userId = $session->get('user_id');
+
+        if (!$userId) {
+            $this->addFlash('error', 'You must be logged in to import photos.');
+            return $this->redirectToRoute('home');
+        }
+
+        $phoenixAccessToken = $this->phoenixAccessTokenRepository->getByUserId($userId);
+        if (!$phoenixAccessToken) {
+            $this->addFlash('error', 'You must first configure your Phoenix access token.');
+            return $this->redirectToRoute('profile');
+        }
+
+        try {
+            $collection = $this->phoenixClient->getPhotos(
+                $phoenixAccessToken->getAccessToken()
+            );
+
+            foreach ($collection->getPhotos() as $photoData) {
+                $photo = new Photo(null, $userId, $photoData['photo_url']);
+                $this->photoRepository->save($photo);
+            }
+
+            $this->addFlash('success', 'Photos imported successfully.');
+        } catch (PhoenixApiUnauthorizedHttpException) {
+            $this->addFlash('error', 'Unauthorized request: Please check your Phoenix access token.');
+            return $this->redirectToRoute('profile');
+        } catch (PhoenixApiClientHttpException) {
+            $this->addFlash('error', 'Internal error: Could not fetch photos from Phoenix.');
+            return $this->redirectToRoute('profile');
+        }
+
+        return $this->redirectToRoute('home');
     }
 }
