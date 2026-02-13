@@ -1,0 +1,174 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Profile - {{ user.username }}{% endblock %}
+
+{% block styles %}
+    <style>
+        .profile-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 30px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 48px;
+            font-weight: bold;
+            margin: 0 auto 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .profile-username {
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .profile-handle {
+            font-size: 1.2em;
+            color: #999;
+        }
+
+        .phoenix-form {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+            margin-top: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 0;
+        }
+
+        .form-label {
+            font-size: 0.85em;
+            color: #667eea;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1em;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            background: white;
+            color: #333;
+            box-sizing: border-box;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: #999;
+        }
+
+        .submit-button {
+            margin-top: 20px;
+            padding: 14px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 1em;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            width: 100%;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-button:active {
+            transform: translateY(0);
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="profile-container">
+        <div class="profile-header">
+            <div class="profile-avatar">
+                {{ user.username|slice(0, 1)|upper }}
+            </div>
+            <h1 class="profile-username">
+                {% if user.name %}
+                    {{ user.name }} {{ user.lastName|default('') }}
+                {% else %}
+                    {{ user.username }}
+                {% endif %}
+            </h1>
+            <div class="profile-handle">@{{ user.username }}</div>
+        </div>
+
+        <form method="POST" action="{{ path('post_profile_phoenix') }}" class="phoenix-form">
+            <div class="form-group">
+                <label for="phoenix-access-token" class="form-label">Phoenix Access Token</label>
+                <input
+                        type="text"
+                        id="phoenix-access-token"
+                        name="phoenix_access_token"
+                        value="{{ accessToken }}"
+                        placeholder="Wprowadź swój token dostępu"
+                        class="form-input"
+                        required
+                >
+            </div>
+            <button type="submit" class="submit-button">Zapisz token</button>
+        </form>
+
+        <div style="text-align: center;">
+            <a href="{{ path('profile') }}" class="back-button">← Powrót do profilu</a>
+        </div>
+    </div>
+{% endblock %}

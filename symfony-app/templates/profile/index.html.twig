@@ -101,7 +101,7 @@
             line-height: 1.6;
         }
         
-        .back-button {
+        .btn {
             display: inline-block;
             margin-top: 30px;
             padding: 12px 30px;
@@ -114,7 +114,7 @@
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
         }
         
-        .back-button:hover {
+        .btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
         }
@@ -204,8 +204,9 @@
             </div>
         </div>
         
-        <div style="text-align: center;">
-            <a href="{{ path('home') }}" class="back-button">← Back to Gallery</a>
+        <div style="display: flex; justify-content: space-between; margin-top: 40px;">
+            <a href="{{ path('home') }}" class="btn">← Back to Gallery</a>
+            <a href="{{ path('profile_phoenix') }}" class="btn">Phoenix API configuration</a>
         </div>
     </div>
 {% endblock %}
