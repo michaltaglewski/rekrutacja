@@ -44,7 +44,7 @@ class PhotoController extends AbstractController
             $this->addFlash('success', 'Photo liked!');
         }
 
-        $this->photoRepository->save($photo);
+        $this->photoRepository->updatePhotoWithLikes($photo);
         $this->photoRepository->setLikeCounter($photo);
 
         return $this->redirectToRoute('home');

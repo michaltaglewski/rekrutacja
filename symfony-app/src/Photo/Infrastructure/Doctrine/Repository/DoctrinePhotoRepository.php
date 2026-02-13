@@ -46,12 +46,27 @@ class DoctrinePhotoRepository extends ServiceEntityRepository implements PhotoRe
 
     public function save(Photo $photo): void
     {
+        if ($photo->getId() === null) {
+            $this->insert($photo);
+
+            return;
+        }
+
+        $this->update($photo);
+    }
+
+    public function updatePhotoWithLikes(Photo $photo): void
+    {
         $entityManager = $this->getEntityManager();
 
         $photoEntity = $entityManager->find(
             PhotoEntity::class,
             $photo->getId()
         );
+
+        if (!$photoEntity) {
+            throw new \RuntimeException('Photo not found');
+        }
 
         $photoEntity = PhotoMapper::setEntityWithLikes($photo, $photoEntity, $entityManager);
 
@@ -69,6 +84,36 @@ class DoctrinePhotoRepository extends ServiceEntityRepository implements PhotoRe
         );
 
         $photoEntity->setLikeCounter($photo->getLikesCount());
+
+        $entityManager->persist($photoEntity);
+        $entityManager->flush();
+    }
+
+    private function insert(Photo $photo): void
+    {
+        $entityManager = $this->getEntityManager();
+
+        $photoEntity = new PhotoEntity();
+        $photoEntity = PhotoMapper::toEntity($photo, $photoEntity, $entityManager);
+
+        $entityManager->persist($photoEntity);
+        $entityManager->flush();
+    }
+
+    private function update(Photo $photo): void
+    {
+        $entityManager = $this->getEntityManager();
+
+        $photoEntity = $entityManager->find(
+            PhotoEntity::class,
+            $photo->getId()
+        );
+
+        if (!$photoEntity) {
+            throw new \RuntimeException('Photo not found');
+        }
+
+        $photoEntity = PhotoMapper::toEntity($photo, $photoEntity, $entityManager);
 
         $entityManager->persist($photoEntity);
         $entityManager->flush();

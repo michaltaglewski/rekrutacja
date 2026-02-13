@@ -26,12 +26,30 @@ class PhotoMapper
 
         $photo = new Photo(
             $entity->getId(),
-            $entity->getUser()->getId()
+            $entity->getUser()->getId(),
+            $entity->getImageUrl()
         );
 
         $photo->setLikes($likes);
 
         return $photo;
+    }
+
+    public static function toEntity(
+        Photo $photo,
+        PhotoEntity $photoEntity,
+        EntityManagerInterface $entityManager
+    ): PhotoEntity {
+        $user = $entityManager->getReference(UserEntity::class, $photo->getUserId());
+
+        /**
+         * @TODO prefer to avoid setting with the entity directly
+         * and recommend setting with id: $photoEntity->setUserId($photo->getUserId());
+         */
+        $photoEntity->setUser($user);
+        $photoEntity->setImageUrl($photo->getPhotoUrl());
+
+        return $photoEntity;
     }
 
     public static function setEntityWithLikes(

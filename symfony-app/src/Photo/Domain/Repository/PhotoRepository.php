@@ -12,5 +12,7 @@ interface PhotoRepository
 
     public function save(Photo $photo): void;
 
+    public function updatePhotoWithLikes(Photo $photo): void;
+
     public function setLikeCounter(Photo $photo): void;
 }
