@@ -33,8 +33,9 @@ class DoctrineUserRepository extends ServiceEntityRepository implements UserRepo
 
         $connection = $entityManager->getConnection();
 
-        $userSql = "SELECT * FROM users WHERE username = '$username'";
-        $userResult = $connection->executeQuery($userSql);
+        $userSql = "SELECT * FROM users WHERE username = :username";
+        $userResult = $connection->executeQuery($userSql, ['username' => $username]);
+
         $user = $userResult->fetchAssociative();
 
         if (!$user) {

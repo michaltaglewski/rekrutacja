@@ -20,11 +20,10 @@ class DoctrineAuthTokenRepository extends ServiceEntityRepository implements Aut
     public function getByToken(string $token): ?AuthToken
     {
         $entityManager = $this->getEntityManager();
-
         $connection = $entityManager->getConnection();
 
-        $sql = "SELECT * FROM auth_tokens WHERE token = '$token'";
-        $result = $connection->executeQuery($sql);
+        $sql = "SELECT * FROM auth_tokens WHERE token = :token";
+        $result = $connection->executeQuery($sql, ['token' => $token]);
         $tokenData = $result->fetchAssociative();
         if (!$tokenData) {
             return null;
