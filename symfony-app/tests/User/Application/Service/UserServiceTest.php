@@ -11,9 +11,11 @@ use App\User\Domain\Entity\AuthToken;
 use App\User\Domain\Entity\User;
 use App\User\Domain\Repository\AuthTokenRepository;
 use App\User\Domain\Repository\UserRepository;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(UserService::class)]
 class UserServiceTest extends TestCase
 {
     private AuthTokenRepository|MockObject $authTokenRepository;

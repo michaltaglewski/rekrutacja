@@ -7,8 +7,10 @@ namespace Photo\Domain\Entity;
 use App\Photo\Domain\Entity\Like;
 use App\Photo\Domain\Entity\Photo;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(Photo::class)]
 class PhotoTest extends TestCase
 {
     public function testGetIdAndGetUserIdSuccess(): void
