@@ -119,6 +119,10 @@ class ProfileController extends AbstractController
         }
 
         try {
+            /**
+             * @TODO still needs some refinement - better validation like user ID verification,
+             * avoiding multiple imports of the same photos
+             */
             $collection = $this->phoenixClient->getPhotos(
                 $phoenixAccessToken->getAccessToken()
             );
