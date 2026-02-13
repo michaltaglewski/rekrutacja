@@ -12,12 +12,13 @@ final class Photo
     private array $likes = [];
 
     public function __construct(
-        private readonly int $id,
-        private readonly int $userId
+        private readonly ?int $id,
+        private readonly int $userId,
+        private string $photoUrl,
     ) {
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -25,6 +26,16 @@ final class Photo
     public function getUserId(): int
     {
         return $this->userId;
+    }
+
+    public function setPhotoUrl(string $photoUrl): void
+    {
+        $this->photoUrl = $photoUrl;
+    }
+
+    public function getPhotoUrl(): string
+    {
+        return $this->photoUrl;
     }
 
     /**

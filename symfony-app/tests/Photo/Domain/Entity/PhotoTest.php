@@ -16,7 +16,7 @@ class PhotoTest extends TestCase
     public function testGetIdAndGetUserIdSuccess(): void
     {
         // Given
-        $photo = new Photo(2, 1);
+        $photo = new Photo(2, 1, 'https://example.com/photo.jpg');
 
         // Then
         $this->assertEquals(2, $photo->getId());
@@ -26,7 +26,7 @@ class PhotoTest extends TestCase
     public function testSetLikesSuccess(): void
     {
         // Given
-        $photo = new Photo(2, 1);
+        $photo = new Photo(2, 1, 'https://example.com/photo.jpg');
 
         $like1 = new Like(2, 2);
         $like2 = new Like(3, 2);
@@ -47,7 +47,7 @@ class PhotoTest extends TestCase
         $this->expectExceptionMessage('Like with photoId 5 does not belong to photo 2');
 
         // Given
-        $photo = new Photo(2, 1);
+        $photo = new Photo(2, 1, 'https://example.com/photo.jpg');
 
         $like1 = new Like(2, 2);
         $like2 = new Like(3, 5);
@@ -61,7 +61,7 @@ class PhotoTest extends TestCase
     public function testGetLikeCountSuccess(): void
     {
         // Given
-        $photo = new Photo(2, 1);
+        $photo = new Photo(2, 1, 'https://example.com/photo.jpg');
 
         $like1 = new Like(2, 2);
         $like2 = new Like(3, 2);
@@ -86,7 +86,7 @@ class PhotoTest extends TestCase
     {
         // Given
         $userId = 2;
-        $photo = new Photo(2, 1);
+        $photo = new Photo(2, 1, 'https://example.com/photo.jpg');
         $like = new Like(3, 2);
 
         // When
@@ -102,7 +102,7 @@ class PhotoTest extends TestCase
     {
         // Given
         $userId = 2;
-        $photo = new Photo(2, 1);
+        $photo = new Photo(2, 1, 'https://example.com/photo.jpg');
         $like = new Like(2, 2);
 
         // When
@@ -118,7 +118,7 @@ class PhotoTest extends TestCase
     {
         // Given
         $userId = 2;
-        $photo = new Photo(2, 1);
+        $photo = new Photo(2, 1, 'https://example.com/photo.jpg');
         $like = new Like(2, $userId);
 
         // When
@@ -135,7 +135,7 @@ class PhotoTest extends TestCase
     {
         // Given
         $userId = 2;
-        $photo = new Photo(2, 1);
+        $photo = new Photo(2, 1, 'https://example.com/photo.jpg');
 
         // When
         $actual = $photo->isLikedBy($userId);
@@ -148,7 +148,7 @@ class PhotoTest extends TestCase
     {
         // Given
         $userId = 2;
-        $photo = new Photo(2, 1);
+        $photo = new Photo(2, 1, 'https://example.com/photo.jpg');
 
         // When
         $photo->setLikes([new Like($userId, 2)]);
