@@ -29,6 +29,7 @@ z racji że w DDD nie wolno mieszać obiektów pomiędzy bounded contextami, tak
 - w composer.json autoload psr-4 wyglądał jakby miał błąd w zapisie namespace "App\\\\", zmieniłem na "App\\"
 - AuthController miał błąd polegający na tym, że token autoryzacyjny i użytkownik był sprawdzany niezależnie, 
 pomijając sprawdzanie czy istniejący token należy do danego użytkownika
+- naprawiłem zapytania SQL w akcji poczas logowania użytkownika, które miały podatność na SQL injection
 - w HomeController phpdoc błędnie wskazywał na typ zwracany JsonResponse. Poprawiłem + zmieniłem nową wersję atrybutów PHP
 - generalnie wolę unikać nazw zmiennych typu `$em` (entity manager), oczywiście skróty same w sobie nie są złe oraz 
 gdy taka jest akurat przyjęta konwencja czy zasada w zespole i wszyscy rozumieją "co to jest". 
